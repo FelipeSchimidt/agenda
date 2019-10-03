@@ -1,0 +1,57 @@
+<div class="form-inline" action="">
+  <div class="form-group mb-2">
+    <label class="mr-2">Filtro:</label>
+    <input type="text" class="form-control mr-2" [(ngModel)]="filtroLista" />
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead class="thead-ligth">
+    <tr>
+      <th>
+        <button class="btn btn-outline-primary" (click)="alternarImagem()">
+          Mostrar Imagem
+        </button>
+      </th>
+      <th>#</th>
+      <th>Nome</th>
+      <th>Sobrenome</th>
+      <th>Nascimento</th>
+      <th>Email</th>
+      <th>Passwords</th>
+      <th>Opções</th>
+    </tr>
+    <!-- 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback' -->
+  </thead>
+  <tbody *ngIf="usuarios && usuarios.length">
+    <tr *ngFor="let usuario of usuariosFiltrados">
+      <td>
+        <img
+          *ngIf="mostrarImagem"
+          src="http://localhost:5000/img/{{ usuario.imagemUrl }}"
+          [style.width.px]="imagemLargura"
+          [style.margin.px]="imagemMargem"
+        />
+      </td>
+      <td>{{ usuario.id }}</td>
+      <td>{{ usuario.firstName }}</td>
+      <td>{{ usuario.lastName }}</td>
+      <td>{{ usuario.birth | date }}</td>
+      <td>{{ usuario.mail }}</td>
+      <td>{{ usuario.passwords }}</td>
+      <td>
+        <button class="btn btn-success">Alterar</button>
+        <button class="btn btn-danger">Deletar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<tfoot *ngIf="!usuarios.length">
+  <tr>
+    <td colspan="7" class="text-center">
+      <h4>
+        Nenhum usuario encontrado!
+      </h4>
+    </td>
+  </tr>
+</tfoot>
