@@ -2,18 +2,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using aspApi.Database;
-using aspApi.Models;
+
+using Agenda.Domain;
 
 namespace aspApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class EventoController : ControllerBase
-    {
-        private ApiDBContext context;
+    {/* 
+        private AgendaContext context;
 
-        public EventoController(ApiDBContext _context)
+        public EventoController(AgendaContext _context)
         {
             context = _context;
         }
@@ -75,6 +75,6 @@ namespace aspApi.Controllers
             await context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
     }
 }

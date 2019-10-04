@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using aspApi.Models;
-using aspApi.Database;
+
+using Agenda.Domain;
 
 namespace aspApi.Controllers
 {
@@ -12,9 +12,9 @@ namespace aspApi.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly ApiDBContext context;
+        private readonly AgendaContext context;
 
-        public UsuarioController(ApiDBContext _context)
+        public UsuarioController(AgendaContext _context)
         {
             context = _context;
         }
