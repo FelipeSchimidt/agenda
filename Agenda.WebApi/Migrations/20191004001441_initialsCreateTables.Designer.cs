@@ -10,8 +10,8 @@ using aspApi.Database;
 namespace aspApi.Migrations
 {
     [DbContext(typeof(ApiDBContext))]
-    [Migration("20190925222641_removeAgendaIdUsuario")]
-    partial class removeAgendaIdUsuario
+    [Migration("20191004001441_initialsCreateTables")]
+    partial class initialsCreateTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,75 +23,87 @@ namespace aspApi.Migrations
 
             modelBuilder.Entity("aspApi.Models.Agenda", b =>
                 {
-                    b.Property<int>("UsuarioId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("EventoId");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("observacao");
+                    b.Property<int?>("EventoId");
 
-                    b.Property<byte[]>("versao")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<int>("Events");
 
-                    b.HasKey("UsuarioId", "EventoId");
+                    b.Property<string>("Observations");
+
+                    b.Property<int>("Users");
+
+                    b.Property<int?>("UsuarioId");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("Users", "Events");
 
                     b.HasIndex("EventoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Agendas");
                 });
 
             modelBuilder.Entity("aspApi.Models.Evento", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("dateEvent");
+                    b.Property<DateTime>("DateEvent");
 
-                    b.Property<string>("description");
+                    b.Property<string>("Description");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired();
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Eventos");
                 });
 
             modelBuilder.Entity("aspApi.Models.Usuario", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("birth");
+                    b.Property<DateTime>("Birth");
 
-                    b.Property<string>("firstName")
+                    b.Property<string>("FirstName")
                         .IsRequired();
 
-                    b.Property<string>("lastName");
+                    b.Property<string>("ImagemUrl");
 
-                    b.Property<string>("mail")
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Mail")
                         .IsRequired();
 
-                    b.Property<string>("passwords");
+                    b.Property<string>("Password");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("aspApi.Models.Agenda", b =>
                 {
-                    b.HasOne("aspApi.Models.Evento", "evento")
+                    b.HasOne("aspApi.Models.Evento")
                         .WithMany("Agendas")
-                        .HasForeignKey("EventoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("EventoId");
 
-                    b.HasOne("aspApi.Models.Usuario", "Usuario")
+                    b.HasOne("aspApi.Models.Usuario")
                         .WithMany("Agendas")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UsuarioId");
                 });
 #pragma warning restore 612, 618
         }

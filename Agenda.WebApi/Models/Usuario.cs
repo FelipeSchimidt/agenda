@@ -18,7 +18,8 @@ namespace aspApi.Models
         [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", ErrorMessage = "Insira um endereço de email valido")]
         [Required(ErrorMessage = "Email obrigatorio")]
         public string Mail { get; set; }
-        public string Passwords { get; set; }
+        [RegularExpression(@"[a-zA-Z]")]
+        public string Password { get; set; }
         public string ImagemUrl { get; set; }
         public IList<Agenda> Agendas { get; set; }
     }

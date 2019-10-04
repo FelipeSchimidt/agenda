@@ -86,7 +86,7 @@ namespace aspApi.Migrations
                     b.Property<string>("Mail")
                         .IsRequired();
 
-                    b.Property<string>("Passwords");
+                    b.Property<string>("Password");
 
                     b.HasKey("Id");
 
