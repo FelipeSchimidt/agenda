@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 using Agenda.Domain;
+using Agenda.Repository;
 
 namespace aspApi
 {
@@ -23,6 +24,7 @@ namespace aspApi
         {
             var connections = Configuration["ConnectionStrings:SqlServerStringConnection"];
             services.AddDbContext<AgendaContext>(opt => opt.UseSqlServer(connections));
+            services.AddScoped<IAgendaRepository, AgendaRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCors();

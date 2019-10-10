@@ -14,6 +14,6 @@ namespace Agenda.Domain
         //[Required(ErrorMessage = "Data do evento obrigatório")]
         public DateTime DataEvento { get; set; }
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        public Usuario Usuario { get; }
     }
 }

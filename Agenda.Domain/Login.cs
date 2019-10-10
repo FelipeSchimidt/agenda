@@ -10,6 +10,6 @@ namespace Agenda.Domain
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        public Usuario Usuario { get; }
     }
 }

@@ -1,60 +1,38 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using Agenda.Domain;
 using Agenda.Repository;
-using System;
+using Agenda.Domain;
 
 namespace aspApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EventoController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly IAgendaRepository repo;
 
-        public EventoController(IAgendaRepository _repo)
+        public LoginController(IAgendaRepository _repo)
         {
             repo = _repo;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{LoginId}")]
+        public async Task<IActionResult> Get(int LoginId)
         {
             try
             {
-                var results = await repo.GetAllEventoAsync(true);
+                var results = await repo.GetLoginById(LoginId, true);
 
                 return Ok(results);
             }
             catch (System.Exception)
             {
 
-                return this.StatusCode(StatusCodes.Status404NotFound, "Evento não encontrado");
-            }
-        }
-
-        [HttpGet("getByDate/{DataEvento}")]
-        public async Task<IActionResult> Get(DateTime dataEvento)
-        {
-            try
-            {
-                var results = await repo.GetAllEventoByDataEvento(dataEvento, true);
-
-                if (results == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(results);
-            }
-            catch (System.Exception)
-            {
-
-                return this.StatusCode(StatusCodes.Status404NotFound, "Evento não encontrado");
+                return this.StatusCode(StatusCodes.Status404NotFound, "Login não encontrado");
             }
         }
 
@@ -63,7 +41,7 @@ namespace aspApi.Controllers
         {
             try
             {
-                var results = await repo.GetAllEventoByName(Nome, true);
+                var results = await repo.GetLoginByName(Nome, true);
 
                 if (results == null)
                 {
@@ -75,33 +53,13 @@ namespace aspApi.Controllers
             catch (System.Exception)
             {
 
-                return this.StatusCode(StatusCodes.Status404NotFound, "Evento não encontrado");
+                return this.StatusCode(StatusCodes.Status404NotFound, "Login não encontrado");
             }
         }
 
-        [HttpGet("{EventoId}")]
-        public async Task<IActionResult> Get(int EventoId)
-        {
-            try
-            {
-                var results = await repo.GetEventoById(EventoId, true);
-
-                if (results == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(results);
-            }
-            catch (System.Exception)
-            {
-
-                return this.StatusCode(StatusCodes.Status404NotFound, "Evento não encontrado");
-            }
-        }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(Login model)
         {
             try
             {
@@ -109,7 +67,7 @@ namespace aspApi.Controllers
 
                 if (await repo.SaveChangeAsync())
                 {
-                    return Created($"/api/evento/{model.Id}", model);
+                    return Created($"/api/login/{model.Id}", model);
                 }
 
             }
@@ -122,11 +80,11 @@ namespace aspApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int EventoId, Evento model)
+        public async Task<IActionResult> Put(int LoginId, Login model)
         {
             try
             {
-                var results = await repo.GetEventoById(EventoId, true);
+                var results = await repo.GetEventoById(LoginId, true);
 
                 if (results == null)
                 {
@@ -137,7 +95,7 @@ namespace aspApi.Controllers
 
                 if (await repo.SaveChangeAsync())
                 {
-                    return Created($"/api/evento/{model.Id}", model);
+                    return Created($"/api/login/{model.Id}", model);
                 }
             }
             catch (System.Exception)

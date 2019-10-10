@@ -12,6 +12,7 @@ namespace Agenda.Repository
         public AgendaRepository(AgendaContext _context)
         {
             context = _context;
+            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
         public void Add<T>(T entity) where T : class
         {
@@ -38,7 +39,9 @@ namespace Agenda.Repository
                 .Include(u => u.Eventos)
                 .Include(u => u.Logins);
 
-            query = query.OrderByDescending(u => u.Nascimento);
+            query = query
+                .AsNoTracking()
+                .OrderByDescending(u => u.Nascimento);
             return await query.ToArrayAsync();
         }
         public async Task<Usuario[]> GetAllUsuarioAsyncByName(string Nome, bool includeEvento = false)
@@ -52,7 +55,9 @@ namespace Agenda.Repository
                 .Include(u => u.Eventos)
                 .Include(u => u.Logins);
 
-            query = query.OrderByDescending(u => u.Nascimento)
+            query = query
+                .AsNoTracking()
+                .OrderByDescending(u => u.Nascimento)
                         .Where(u => u.Nome.Contains(Nome));
             return await query.ToArrayAsync();
         }
@@ -86,7 +91,9 @@ namespace Agenda.Repository
                     .Include(e => e.Usuario);
             }
 
-            query = query.OrderBy(e => e.DataEvento);
+            query = query
+                .AsNoTracking()
+                .OrderBy(e => e.DataEvento);
             return await query.ToArrayAsync();
         }
 
@@ -100,7 +107,9 @@ namespace Agenda.Repository
                     .Include(e => e.Usuario);
             }
 
-            query = query.OrderByDescending(e => e.DataEvento)
+            query = query
+                .AsNoTracking()
+                .OrderByDescending(e => e.DataEvento)
                 .Where(e => e.DataEvento == dataEvento);
             return await query.ToArrayAsync();
         }
@@ -115,7 +124,9 @@ namespace Agenda.Repository
                     .Include(e => e.Usuario);
             }
 
-            query = query.OrderBy(e => e.Nome)
+            query = query
+                .AsNoTracking()
+                .OrderBy(e => e.Nome)
                 .Where(e => e.Nome.ToLower().Contains(Nome.ToLower()));
             return await query.ToArrayAsync();
         }
@@ -145,6 +156,7 @@ namespace Agenda.Repository
             }
 
             query = query
+                .AsNoTracking()
                 .Where(e => e.Id == LoginId);
             return await query.FirstOrDefaultAsync();
         }
@@ -160,6 +172,7 @@ namespace Agenda.Repository
             }
 
             query = query
+                .AsNoTracking()
                 .Where(e => e.Username.ToLower().Contains(Name.ToLower()));
             return await query.FirstOrDefaultAsync();
         }

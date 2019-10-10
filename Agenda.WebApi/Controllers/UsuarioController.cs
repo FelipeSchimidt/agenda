@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 using Agenda.Domain;
+using Agenda.Repository;
 
 namespace aspApi.Controllers
 {
@@ -12,92 +13,134 @@ namespace aspApi.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly AgendaContext context;
-
-        public UsuarioController(AgendaContext _context)
+        public IAgendaRepository repo { get; }
+        public UsuarioController(IAgendaRepository _repo)
         {
-            context = _context;
+            repo = _repo;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsuarios()
-        {
-            var users = await context.Usuarios.ToListAsync();
-
-            return Ok(users);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsuario(int id)
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var usuario = await context.Usuarios.FindAsync(id);
+                var results = await repo.GetAllUsuarioAsync(true);
 
-                return Ok(usuario);
+                return Ok(results);
             }
             catch (System.Exception)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, "Usuario não encontrado");
-            }
 
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro no Banco de Dados");
+            }
+        }
+
+        [HttpGet("{UsuarioId}")]
+        public async Task<IActionResult> Get(int UsuarioId)
+        {
+            try
+            {
+                var results = await repo.GetUsuarioAsyncById(UsuarioId);
+
+                return Ok(results);
+            }
+            catch (System.Exception)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, "Erro no Banco de Dados");
+            }
+        }
+
+        [HttpGet("getByName/{name}")]
+        public async Task<IActionResult> Get(string name)
+        {
+            try
+            {
+                var results = await repo.GetAllUsuarioAsyncByName(name, true);
+
+                return Ok(results);
+            }
+            catch (System.Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro no Banco de Dados");
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUsuario(Usuario usuario)
-        {
-            context.Usuarios.Add(usuario);
-            await context.SaveChangesAsync();
-
-            /** 
-            * CreatedAtAction
-            * 1º - Retorna STATUSCODE = 201 e adiciona ao Location a resposta
-            * 2º - Refencia a ação GetUsuario
-            * 3º - retorna usuário no qual usuario.include == id
-            */
-            return CreatedAtAction(nameof(GetUsuario),
-                new { id = usuario.Id },
-                usuario
-                );
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUsuario(int id, [FromBody]Usuario usuario)
+        public async Task<IActionResult> Post(Usuario model)
         {
             try
             {
-                /**
-                * Especifica uma entitdade que tera seu estado alterado
-                */
-                context.Entry(usuario).State = EntityState.Modified;
+                repo.Add(model);
 
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (id != usuario.Id)
+                if (await repo.SaveChangeAsync())
                 {
-                    return this.StatusCode(StatusCodes.Status400BadRequest, "Usuario não encontrado");
+                    return Created($"/api/usuario/{model.Id}", model);
                 }
-            }
-            return Ok(usuario);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuario(int id)
-        {
-            try
-            {
-                var user = await context.Usuarios.FindAsync(id);
-                context.Usuarios.Remove(user);
-                await context.SaveChangesAsync();
-
-                return NoContent();
             }
             catch (System.Exception)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, "Usuario não encontrado");
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro no Banco de Dados");
             }
+
+            return BadRequest();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(int UsuarioId, Usuario model)
+        {
+            try
+            {
+                var usuario = await repo.GetUsuarioAsyncById(UsuarioId);
+
+                if (usuario == null)
+                {
+                    return this.StatusCode(StatusCodes.Status404NotFound, "Usuário não encontrado");
+                }
+
+                repo.Update(model);
+
+                if (await repo.SaveChangeAsync())
+                {
+                    return Created($"/api/usuario/{model.Id}", model);
+                }
+            }
+            catch (System.Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro no Banco de Dados");
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int UsuarioId)
+        {
+            try
+            {
+                var usuario = await repo.GetUsuarioAsyncById(UsuarioId);
+
+                if (usuario == null)
+                {
+                    return this.StatusCode(StatusCodes.Status404NotFound, "Usuário não encontrado");
+                }
+
+                repo.Delete(usuario);
+
+                if (await repo.SaveChangeAsync())
+                {
+                    return Ok();
+                }
+            }
+            catch (System.Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro no Banco de Dados");
+            }
+
+            return BadRequest();
         }
     }
 }
