@@ -41,7 +41,7 @@ namespace Agenda.Repository
 
             query = query
                 .AsNoTracking()
-                .OrderByDescending(u => u.Nascimento);
+                .OrderBy(u => u.Id);
             return await query.ToArrayAsync();
         }
         public async Task<Usuario[]> GetAllUsuarioAsyncByName(string Nome, bool includeEvento = false)

@@ -1,60 +1,59 @@
-import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from '../_services/usuario.service';
+import { Usuario } from '../_model/Usuario';
 
 @Component({
-  selector: "app-usuarios",
-  templateUrl: "./usuarios.component.html",
-  styleUrls: ["./usuarios.component.css"]
+  selector: 'app-usuarios',
+  templateUrl: './usuarios.component.html',
+  styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-  usuarios: any = [];
-  imagemLargura = 50;
-  imagemMargem = 2;
-  mostrarImagem = false;
+	usuarios: Usuario[];
+	imagemLargura = 50;
+	imagemMargem = 2;
+	mostrarImagem = false;
+	_filtroLista: string;
 
-  newVariable: any;
-
-  _filtroLista: string;
-
-  get filtroLista() {
-    return this._filtroLista;
-  }
-  set filtroLista(value: string) {
-    this._filtroLista = value;
-    this.usuariosFiltrados = this.filtroLista
-      ? this.filtrarUsuarios(this.filtroLista)
-      : this.usuarios;
-  }
+	get filtroLista() {
+		return this._filtroLista;
+	}
+	set filtroLista(value: string) {
+		this._filtroLista = value;
+		this.usuariosFiltrados = this.filtroLista
+		? this.filtrarUsuarios(this.filtroLista)
+		: this.usuarios;
+	}
 
   usuariosFiltrados: any = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private usuarioService: UsuarioService) {}
 
-  ngOnInit() {
-    this.getEventos();
-  }
+	ngOnInit() {
+		this.getEventos();
+	}
 
-  getEventos() {
-    this.http.get("http://localhost:5000/api/usuario").subscribe(
-      response => {
-        this.usuarios = response;
-        console.log(response);
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
+	getEventos() {
+		this.usuarioService.geAlltUsuario().subscribe(
+		(_usuario: Usuario[]) => {
+			this.usuarios = _usuario;
+			this.usuariosFiltrados = this.usuarios;
+			console.log(_usuario);
+		},
+		error => {
+			console.log(error);
+		}
+		);
+	}
 
-  alternarImagem() {
-    this.mostrarImagem = !this.mostrarImagem;
-  }
+	alternarImagem() {
+		this.mostrarImagem = !this.mostrarImagem;
+	}
 
-  filtrarUsuarios(filtrarPor: string) {
-    filtrarPor = filtrarPor.toLocaleLowerCase();
-    return this.usuarios.filter(
-      usuario =>
-        usuario.firstName.toLocaleLowerCase().indexOf(filtrarPor) !== -1
-    );
-  }
+	filtrarUsuarios(filtrarPor: string): Usuario[] {
+		filtrarPor = filtrarPor.toLocaleLowerCase();
+		return this.usuarios.filter(
+		usuario =>
+			usuario.nome.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+		);
+	}
 }

@@ -18,7 +18,7 @@
       <th>Sobrenome</th>
       <th>Nascimento</th>
       <th>Email</th>
-      <th>Passwords</th>
+      <th>CPF</th>
       <th>Opções</th>
     </tr>
     <!-- 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback' -->
@@ -34,11 +34,11 @@
         />
       </td>
       <td>{{ usuario.id }}</td>
-      <td>{{ usuario.firstName }}</td>
-      <td>{{ usuario.lastName }}</td>
-      <td>{{ usuario.birth | date }}</td>
-      <td>{{ usuario.mail }}</td>
-      <td>{{ usuario.passwords }}</td>
+      <td>{{ usuario.nome }}</td>
+      <td>{{ usuario.sobrenome }}</td>
+      <td>{{ usuario.nascimento | date }}</td>
+      <td>{{ usuario.email }}</td>
+      <td>{{ usuario.cpf }}</td>
       <td>
         <button class="btn btn-success">Alterar</button>
         <button class="btn btn-danger">Deletar</button>
