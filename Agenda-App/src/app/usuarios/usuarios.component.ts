@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { UsuarioService } from '../_services/usuario.service';
 import { Usuario } from '../_model/Usuario';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-usuarios',
@@ -12,7 +13,14 @@ export class UsuariosComponent implements OnInit {
 	imagemLargura = 50;
 	imagemMargem = 2;
 	mostrarImagem = false;
-	_filtroLista: string;
+	modalRef: BsModalRef;
+
+	_filtroLista: string = '';
+
+	constructor(
+			private usuarioService: UsuarioService,
+			private modalService: BsModalService
+		) {}
 
 	get filtroLista() {
 		return this._filtroLista;
@@ -24,9 +32,12 @@ export class UsuariosComponent implements OnInit {
 		: this.usuarios;
 	}
 
-  usuariosFiltrados: any = [];
+	openModal(template: TemplateRef<any>)
+	{
+		this.modalRef = this.modalService.show(template);
+	}
 
-  constructor(private usuarioService: UsuarioService) {}
+  	usuariosFiltrados: any = [];
 
 	ngOnInit() {
 		this.getEventos();
