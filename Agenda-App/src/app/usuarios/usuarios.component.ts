@@ -79,9 +79,15 @@ export class UsuariosComponent implements OnInit {
 				Validators.maxLength(50)
 				]),
 			// tslint:disable-next-line: new-parens
-			sobrenome: new FormControl('', Validators.required),
+			sobrenome: new FormControl('', [
+				Validators.required,
+				Validators.minLength(4),
+				Validators.maxLength(50)
+				]),
 			// tslint:disable-next-line: new-parens
-			nascimento: new FormControl('', Validators.required),
+			nascimento: new FormControl('', [
+				Validators.required
+				]),
 			// tslint:disable-next-line: new-parens
 			cpf: new FormControl('', [
 				Validators.required

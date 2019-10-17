@@ -96,57 +96,163 @@
 
 <form [formGroup]="registerForm">
 	<div class="form-row">
-		<div class="form-group col-md-12">
+		<div class="form-group col-md-6">
 			<label>Nome</label>
 			<input
 				type="text"
-				class="form-control is-invalid"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid':
+						registerForm.get('nome').errors &&
+						registerForm.get('nome').touched
+				}"
 				formControlName="nome"
-				placeholder=""
+				placeholder="Informe seu nome"
 			/>
-			<div class="invalid-feedback">O nome é obrigatório</div>
+			<div
+				*ngIf="
+					registerForm.get('nome').hasError('required') &&
+					registerForm.get('nome').touched
+				"
+				class="invalid-feedback"
+			>
+				O nome é obrigatório
+			</div>
+			<div
+				*ngIf="
+					registerForm.get('nome').hasError('minlength') &&
+					registerForm.get('nome').touched
+				"
+				class="invalid-feedback"
+			>
+				Nome deve ter no miníno 4 caracteres
+			</div>
+			<div
+				*ngIf="
+					registerForm.get('nome').hasError('maxlength') &&
+					registerForm.get('nome').touched
+				"
+				class="invalid-feedback"
+			>
+				Nome deve ter no maximo 50 caracteres
+			</div>
 		</div>
-	</div>
-	<div class="form-row">
-		<div class="form-group col-md-8">
+		<div class="form-group col-md-6">
 			<label>Sobrenome</label>
 			<input
 				type="text"
-				class="form-control is-invalid"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid':
+						registerForm.get('sobrenome').errors &&
+						registerForm.get('sobrenome').touched
+				}"
 				formControlName="sobrenome"
 			/>
-			<div class="invalid-feedback">O sobrenome é obrigatório</div>
+			<div
+				*ngIf="
+					registerForm.get('sobrenome').hasError('required') &&
+					registerForm.get('sobrenome').touched
+				"
+				class="invalid-feedback"
+			>
+				O sobrenome é obrigatório
+			</div>
+			<div
+				*ngIf="
+					registerForm.get('sobrenome').hasError('minlength') &&
+					registerForm.get('sobrenome').touched
+				"
+				class="invalid-feedback"
+			>
+				O Sobrenome deve ter no miníno 4 caracteres
+			</div>
+			<div
+				*ngIf="
+					registerForm.get('sobrenome').hasError('maxlength') &&
+					registerForm.get('sobrenome').touched
+				"
+				class="invalid-feedback"
+			>
+				O Sobrenome deve ter no maximo 50 caracteres
+			</div>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<label>CPF</label>
+			<input
+				type="text"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid':
+						registerForm.get('cpf').hasError('required') &&
+						registerForm.get('cpf').touched
+				}"
+				formControlName="cpf"
+			/>
+			<div
+				*ngIf="
+					registerForm.get('cpf').hasError('required') &&
+					registerForm.get('cpf').touched
+				"
+				class="invalid-feedback"
+			>
+				Informe um CPF valido
+			</div>
+			<!-- 			<div
+				*ngIf="
+					registerForm.get('cpf').hasError('required') &&
+					registerForm.get('cpf').touched
+				"
+				class="invalid-feedback"
+			>
+				Informe um CPF valido
+			</div> -->
 		</div>
 		<div class="form-group col-md-4">
 			<label>Data Nascimento</label>
 			<input
 				type="text"
-				class="form-control is-invalid"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid':
+						registerForm.get('nascimento').hasError('required') &&
+						registerForm.get('nascimento').touched
+				}"
 				formControlName="nascimento"
 			/>
-			<div class="invalid-feedback">
+			<div
+				*ngIf="
+					registerForm.get('nascimento').hasError('required') &&
+					registerForm.get('nascimento').touched
+				"
+				class="invalid-feedback"
+			>
 				A data de nascimento é obrigatório
 			</div>
 		</div>
-	</div>
-	<div class="form-row">
-		<div class="form-group col-md-3">
-			<label>CPF</label>
-			<input
-				type="text"
-				class="form-control is-invalid"
-				formControlName="cpf"
-			/>
-			<div class="invalid-feedback">O cpf é obrigatório</div>
-		</div>
-		<div class="form-group col-md-9">
+		<div class="form-group col-md-4">
 			<label>Imagem</label>
 			<input
 				type="text"
-				class="form-control is-invalid"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid':
+						registerForm.get('imagemURL').hasError('required') &&
+						registerForm.get('imagemURL').touched
+				}"
 				formControlName="imagemURL"
 			/>
-			<div class="invalid-feedback">A imagem é obrigatório</div>
+			<div
+				*ngIf="
+					registerForm.get('imagemURL').hasError('required') &&
+					registerForm.get('imagemURL').touched
+				"
+				class="invalid-feedback"
+			>
+				A imagem é obrigatóri
+			</div>
 		</div>
 	</div>
 	<div class="form-row">
@@ -154,10 +260,32 @@
 			<label>Email</label>
 			<input
 				type="text"
-				class="form-control is-invalid"
+				class="form-control"
+				[ngClass]="{
+					'is-invalid':
+						registerForm.get('email').errors &&
+						registerForm.get('email').touched
+				}"
 				formControlName="email"
 			/>
-			<div class="invalid-feedback">O email é obrigatório</div>
+			<div
+				*ngIf="
+					registerForm.get('email').hasError('required') &&
+					registerForm.get('email').touched
+				"
+				class="invalid-feedback"
+			>
+				A email é obrigatório
+			</div>
+			<div
+				*ngIf="
+					registerForm.get('email').hasError('email') &&
+					registerForm.get('email').touched
+				"
+				class="invalid-feedback"
+			>
+				Informe um email válido
+			</div>
 		</div>
 	</div>
 </form>
