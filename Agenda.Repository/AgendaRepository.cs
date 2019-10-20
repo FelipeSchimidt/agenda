@@ -84,6 +84,7 @@ namespace Agenda.Repository
         public async Task<Evento[]> GetAllEventoAsync(bool includeUsuario = false)
         {
             IQueryable<Evento> query = context.Eventos;
+            //    .Include(e => e.Usuario);
 
             if (includeUsuario)
             {
@@ -92,8 +93,7 @@ namespace Agenda.Repository
             }
 
             query = query
-                .AsNoTracking()
-                .OrderBy(e => e.DataEvento);
+                .OrderBy(e => e.Id);
             return await query.ToArrayAsync();
         }
 

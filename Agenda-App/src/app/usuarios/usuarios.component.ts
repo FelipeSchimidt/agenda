@@ -37,7 +37,7 @@ export class UsuariosComponent implements OnInit {
 		(_usuario: Usuario[]) => {
 			this.usuarios = _usuario;
 			this.usuariosFiltrados = this.usuarios;
-			console.log(_usuario);
+			console.table(_usuario);
 		},
 		error => {
 			console.log(error);
