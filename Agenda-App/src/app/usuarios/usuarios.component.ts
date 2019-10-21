@@ -2,7 +2,12 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { UsuarioService } from '../_services/usuario.service';
 import { Usuario } from '../_model/Usuario';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+	FormGroup,
+	FormControl,
+	Validators,
+	FormBuilder
+} from '@angular/forms';
 
 @Component({
   selector: 'app-usuarios',
@@ -13,6 +18,8 @@ export class UsuariosComponent implements OnInit {
 
 	constructor(
 			private usuarioService: UsuarioService,
+		private modalService: BsModalService,
+		private fb: FormBuilder
 		) {}
 
 	get filtroLista() {
@@ -70,38 +77,35 @@ export class UsuariosComponent implements OnInit {
 	}
 
 	validation() {
-		this.registerForm = new FormGroup({
+		this.registerForm = this.fb.group({
 			// tslint:disable-next-line: new-parens
-			nome: new FormControl('', [
+			nome: [
+				'',
+				[
 				Validators.required,
 				Validators.minLength(4),
 				Validators.maxLength(50)
-				]),
+				]
+			],
 			// tslint:disable-next-line: new-parens
-			sobrenome: new FormControl('', [
+			sobrenome: [
+				'',
+				[
 				Validators.required,
 				Validators.minLength(4),
 				Validators.maxLength(50)
-				]),
+				]
+			],
 			// tslint:disable-next-line: new-parens
-			nascimento: new FormControl('', [
-				Validators.required
-				]),
+			nascimento: ['', [Validators.required]],
 			// tslint:disable-next-line: new-parens
-			cpf: new FormControl('', [
-				Validators.required
-				]),
+			cpf: ['', [Validators.required]],
 			// tslint:disable-next-line: new-parens
-			email: new FormControl('', [
-				Validators.required,
-				Validators.email
-				]),
+			email: ['', [Validators.required, Validators.email]],
 			// tslint:disable-next-line: new-parens
-			imagemURL: new FormControl('', Validators.required)
+			imagemURL: ['', Validators.required]
 		});
 	}
 
-	salvarAlteracao() {
-
-	}
+	salvarAlteracao() {}
 }
