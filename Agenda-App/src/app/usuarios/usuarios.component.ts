@@ -10,17 +10,16 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+	selector: 'app-usuarios',
+	templateUrl: './usuarios.component.html',
+	styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-
 	constructor(
-			private usuarioService: UsuarioService,
+		private usuarioService: UsuarioService,
 		private modalService: BsModalService,
 		private fb: FormBuilder
-		) {}
+	) {}
 
 	get filtroLista() {
 		return this._filtroLista;
@@ -28,8 +27,8 @@ export class UsuariosComponent implements OnInit {
 	set filtroLista(value: string) {
 		this._filtroLista = value;
 		this.usuariosFiltrados = this.filtroLista
-		? this.filtrarUsuarios(this.filtroLista)
-		: this.usuarios;
+			? this.filtrarUsuarios(this.filtroLista)
+			: this.usuarios;
 	}
 	usuarios: Usuario[];
 	imagemLargura = 50;
@@ -40,7 +39,7 @@ export class UsuariosComponent implements OnInit {
 
 	_filtroLista: string;
 
-  	usuariosFiltrados: any = [];
+	usuariosFiltrados: any = [];
 
 	openModal(template: TemplateRef<any>) {
 		this.modalRef = this.modalService.show(template);
@@ -53,14 +52,14 @@ export class UsuariosComponent implements OnInit {
 
 	getEventos() {
 		this.usuarioService.geAlltUsuario().subscribe(
-		(_usuario: Usuario[]) => {
-			this.usuarios = _usuario;
-			this.usuariosFiltrados = this.usuarios;
-			console.table(_usuario);
-		},
-		error => {
-			console.log(error);
-		}
+			(_usuario: Usuario[]) => {
+				this.usuarios = _usuario;
+				this.usuariosFiltrados = this.usuarios;
+				console.table(_usuario);
+			},
+			error => {
+				console.log(error);
+			}
 		);
 	}
 
@@ -71,8 +70,8 @@ export class UsuariosComponent implements OnInit {
 	filtrarUsuarios(filtrarPor: string): Usuario[] {
 		filtrarPor = filtrarPor.toLocaleLowerCase();
 		return this.usuarios.filter(
-		usuario =>
-			usuario.nome.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+			usuario =>
+				usuario.nome.toLocaleLowerCase().indexOf(filtrarPor) !== -1
 		);
 	}
 
@@ -82,18 +81,18 @@ export class UsuariosComponent implements OnInit {
 			nome: [
 				'',
 				[
-				Validators.required,
-				Validators.minLength(4),
-				Validators.maxLength(50)
+					Validators.required,
+					Validators.minLength(4),
+					Validators.maxLength(50)
 				]
 			],
 			// tslint:disable-next-line: new-parens
 			sobrenome: [
 				'',
 				[
-				Validators.required,
-				Validators.minLength(4),
-				Validators.maxLength(50)
+					Validators.required,
+					Validators.minLength(4),
+					Validators.maxLength(50)
 				]
 			],
 			// tslint:disable-next-line: new-parens
